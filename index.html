@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เฉลยแบบฝึกหัด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F3EC;
+    --ink:#262622;
+    --ink-soft:#6B675D;
+    --accent:#3F6C51;
+    --accent-dark:#345943;
+    --accent-soft:#E3EAE2;
+    --line:#DDD7C7;
+    --card-bg:#FFFFFF;
+    --danger:#AA4A2F;
+    --danger-soft:#F3E4DD;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Thai', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:48px 20px 80px;}
+  header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:32px;}
+  h1{font-size:26px;font-weight:700;margin:0 0 6px;letter-spacing:-0.01em;}
+  .subtitle{margin:0;color:var(--ink-soft);font-size:14.5px;}
+  .icon-btn{
+    width:40px;height:40px;flex-shrink:0;border-radius:10px;
+    border:1px solid var(--line);background:var(--card-bg);color:var(--ink-soft);
+    font-size:16px;cursor:pointer;transition:.15s border-color,.15s color,.15s background;
+  }
+  .icon-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .icon-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .item{
+    display:flex;align-items:center;gap:10px;
+    background:var(--card-bg);border:1px solid var(--line);border-radius:12px;
+    padding:6px 6px 6px 16px;
+  }
+  .item-check{
+    width:20px;height:20px;border-radius:50%;flex-shrink:0;
+    border:1.5px solid var(--accent);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-size:11px;
+  }
+  a.item-name-link{
+    flex:1;min-width:0;text-align:left;text-decoration:none;
+    font-family:inherit;font-size:15.5px;font-weight:500;color:var(--ink);
+    padding:12px 6px;cursor:pointer;border-radius:8px;display:block;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  a.item-name-link:hover{color:var(--accent);}
+  a.item-name-link:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+  .item-path{
+    display:block;font-size:11.5px;font-weight:400;color:var(--ink-soft);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px;
+  }
+  .item-name-input{
+    flex:1;min-width:0;font-family:inherit;font-size:15.5px;font-weight:500;color:var(--ink);
+    padding:11px 8px;border:1px solid var(--accent);border-radius:8px;background:var(--accent-soft);
+  }
+  .item-actions{display:flex;gap:2px;flex-shrink:0;}
+  .item-actions button{
+    width:32px;height:32px;border-radius:8px;border:1px solid transparent;
+    background:transparent;color:var(--ink-soft);cursor:pointer;font-size:14px;
+  }
+  .item-actions button:hover{background:var(--accent-soft);color:var(--accent);}
+  .item-actions button.delete:hover{background:var(--danger-soft);color:var(--danger);}
+
+  .empty-state{text-align:center;padding:44px 16px;color:var(--ink-soft);}
+  .empty-state p{margin:4px 0;}
+  .empty-sub{font-size:13.5px;}
+
+  .admin-panel{margin-top:20px;padding-top:20px;border-top:1px dashed var(--line);}
+  .admin-note{
+    font-size:13px;line-height:1.6;color:var(--ink-soft);background:var(--accent-soft);
+    border-radius:10px;padding:12px 14px;margin:0 0 14px;
+  }
+  .admin-note b{color:var(--accent-dark);}
+  .add-row{
+    display:flex;align-items:center;gap:10px;padding:14px 16px;
+    border:1.5px dashed var(--line);border-radius:12px;cursor:pointer;
+    color:var(--ink-soft);font-size:14.5px;transition:.15s border-color,.15s color;
+  }
+  .add-row:hover{border-color:var(--accent);color:var(--accent);}
+  .plus{font-size:18px;font-weight:600;}
+  .manual-add{
+    background:none;border:none;font-family:inherit;color:var(--ink-soft);
+    font-size:13px;text-decoration:underline;cursor:pointer;padding:10px 4px 0;
+  }
+  .manual-add:hover{color:var(--accent);}
+  .export-btn{
+    margin-top:16px;width:100%;padding:13px;border-radius:10px;border:none;
+    background:var(--accent);color:#fff;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;
+  }
+  .export-btn:hover{background:var(--accent-dark);}
+  .export-hint{margin:8px 2px 0;font-size:12.5px;color:var(--ink-soft);line-height:1.55;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>เฉลยแบบฝึกหัด</h1>
+        <p class="subtitle">กดปุ่มเพื่อเปิดเฉลยแต่ละไฟล์</p>
+      </div>
+      <button id="editToggle" class="icon-btn" type="button" title="โหมดแก้ไข" aria-label="โหมดแก้ไข">&#9998;</button>
+    </header>
+
+    <main>
+      <div id="emptyState" class="empty-state" hidden>
+        <p>ยังไม่มีไฟล์เฉลย</p>
+        <p class="empty-sub">กดปุ่มดินสอที่มุมขวาบน แล้วเพิ่มลิงก์ไฟล์เฉลยได้เลย</p>
+      </div>
+
+      <ul id="list" class="list"></ul>
+
+      <div id="adminPanel" class="admin-panel" hidden>
+        <p class="admin-note">
+          <b>วิธีใช้:</b> อัปโหลดไฟล์ .html ตัวจริงขึ้น GitHub เอง (ไว้โฟลเดอร์เดียวกับ index.html)
+          แล้วค่อยเพิ่มลิงก์ที่นี่ให้ชื่อไฟล์ตรงกัน ปุ่มจะพาไปเปิดไฟล์จริงบน GitHub Pages โดยตรง
+        </p>
+
+        <label class="add-row" id="addRow" for="fileInput">
+          <span class="plus">+</span>
+          <span>เลือกไฟล์ .html เพื่อดึงชื่อไฟล์มาสร้างลิงก์ (เลือกได้หลายไฟล์ หรือลากมาวาง)</span>
+        </label>
+        <input type="file" id="fileInput" accept=".html,.htm" multiple hidden>
+        <button class="manual-add" id="manualAddBtn" type="button">หรือพิมพ์ชื่อไฟล์เอง (ถ้ายังไม่มีไฟล์อยู่ในเครื่อง)</button>
+
+        <button id="exportBtn" class="export-btn" type="button">&#8681; ดาวน์โหลดเว็บไซต์ล่าสุด</button>
+        <p class="export-hint">
+          ทุกครั้งที่เพิ่ม/ลบ/เปลี่ยนชื่อลิงก์ ให้กดปุ่มนี้เพื่อดาวน์โหลด index.html ตัวล่าสุด
+          แล้วนำไปอัปโหลดทับไฟล์เดิมบน GitHub (ลากไฟล์ชื่อเดิมไปวางที่ Add file &gt; Upload files ก็เขียนทับให้เอง)
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <!-- ข้อมูลรายชื่อลิงก์เฉลยถูกฝังไว้ตรงนี้ (แก้ไขผ่านหน้าเว็บเท่านั้น อย่าแก้ด้วยมือ) -->
+  <script type="application/json" id="siteData">[]</script>
+
+  <script>
+  (function(){
+    const LS_KEY = 'answerKeyHub:links:v2';
+
+    function uid(){
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    }
+    function niceNameFromFilename(filename){
+      return filename.replace(/\.html?$/i, '');
+    }
+
+    function loadInitialState(){
+      try{
+        const saved = localStorage.getItem(LS_KEY);
+        if (saved) return JSON.parse(saved);
+      }catch(e){}
+      try{
+        const el = document.getElementById('siteData');
+        const raw = el ? el.textContent.trim() : '[]';
+        return raw ? JSON.parse(raw) : [];
+      }catch(e){ return []; }
+    }
+
+    let state = loadInitialState();
+    let editMode = false;
+
+    const listEl = document.getElementById('list');
+    const emptyEl = document.getElementById('emptyState');
+    const adminPanel = document.getElementById('adminPanel');
+    const editToggle = document.getElementById('editToggle');
+    const fileInput = document.getElementById('fileInput');
+    const exportBtn = document.getElementById('exportBtn');
+    const addRow = document.getElementById('addRow');
+    const manualAddBtn = document.getElementById('manualAddBtn');
+
+    function persistLocal(){
+      try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){}
+    }
+
+    function render(){
+      listEl.innerHTML = '';
+      emptyEl.hidden = state.length !== 0;
+
+      state.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'item';
+
+        const check = document.createElement('span');
+        check.className = 'item-check';
+        check.textContent = '\u2713';
+        li.appendChild(check);
+
+        const link = document.createElement('a');
+        link.className = 'item-name-link';
+        link.href = item.path;
+        link.target = '_blank';
+        link.rel = 'noopener';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = item.name;
+        link.appendChild(nameSpan);
+
+        const pathSpan = document.createElement('span');
+        pathSpan.className = 'item-path';
+        pathSpan.textContent = item.path;
+        link.appendChild(pathSpan);
+
+        li.appendChild(link);
+
+        if (editMode){
+          const actions = document.createElement('div');
+          actions.className = 'item-actions';
+
+          const renameBtn = document.createElement('button');
+          renameBtn.type = 'button';
+          renameBtn.title = 'เปลี่ยนชื่อปุ่ม';
+          renameBtn.textContent = '\u270E';
+          renameBtn.addEventListener('click', () => startRename(item.id, li, link));
+          actions.appendChild(renameBtn);
+
+          const pathBtn = document.createElement('button');
+          pathBtn.type = 'button';
+          pathBtn.title = 'แก้ลิงก์ที่ปุ่มนี้ชี้ไป';
+          pathBtn.textContent = '\u{1F517}';
+          pathBtn.addEventListener('click', () => editPath(item.id));
+          actions.appendChild(pathBtn);
+
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'delete';
+          delBtn.title = 'ลบปุ่มนี้ (ไม่ลบไฟล์จริงบน GitHub)';
+          delBtn.textContent = '\u{1F5D1}';
+          delBtn.addEventListener('click', () => removeItem(item.id));
+          actions.appendChild(delBtn);
+
+          li.appendChild(actions);
+        }
+
+        listEl.appendChild(li);
+      });
+
+      adminPanel.hidden = !editMode;
+      editToggle.classList.toggle('active', editMode);
+    }
+
+    function startRename(id, li, linkEl){
+      const item = state.find(x => x.id === id);
+      if (!item) return;
+      const input = document.createElement('input');
+      input.className = 'item-name-input';
+      input.value = item.name;
+      li.replaceChild(input, linkEl);
+      input.focus();
+      input.select();
+
+      function commit(){
+        const v = input.value.trim();
+        item.name = v || item.name;
+        persistLocal();
+        render();
+      }
+      input.addEventListener('blur', commit);
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter'){ e.preventDefault(); input.blur(); }
+        if (e.key === 'Escape'){ render(); }
+      });
+    }
+
+    function editPath(id){
+      const item = state.find(x => x.id === id);
+      if (!item) return;
+      const v = prompt('พาธ/ชื่อไฟล์ที่ปุ่มนี้จะเปิด (ต้องตรงกับไฟล์จริงบน GitHub เช่น q1.html หรือ answers/q1.html):', item.path);
+      if (v === null) return;
+      const trimmed = v.trim();
+      if (!trimmed) return;
+      item.path = trimmed;
+      persistLocal();
+      render();
+    }
+
+    function removeItem(id){
+      const item = state.find(x => x.id === id);
+      if (!item) return;
+      if (!confirm('ลบปุ่ม "' + item.name + '" ออกจากรายการใช่หรือไม่?\n(ไฟล์ .html จริงบน GitHub จะยังอยู่เหมือนเดิม ต้องไปลบเองที่หน้า GitHub ถ้าต้องการ)')) return;
+      state = state.filter(x => x.id !== id);
+      persistLocal();
+      render();
+    }
+
+    function addFromFiles(fileList){
+      const files = Array.from(fileList).filter(f => /\.html?$/i.test(f.name));
+      if (!files.length){
+        alert('กรุณาเลือกไฟล์ .html เท่านั้น');
+        return;
+      }
+      files.forEach(file => {
+        state.push({ id: uid(), name: niceNameFromFilename(file.name), path: file.name });
+      });
+      persistLocal();
+      render();
+    }
+
+    function addManually(){
+      const path = prompt('พิมพ์ชื่อไฟล์หรือพาธของเฉลย (ต้องตรงกับไฟล์จริงบน GitHub เช่น q1.html):');
+      if (!path) return;
+      const trimmed = path.trim();
+      if (!trimmed) return;
+      const name = prompt('ตั้งชื่อปุ่มที่จะแสดง:', niceNameFromFilename(trimmed.split('/').pop()));
+      state.push({ id: uid(), name: (name && name.trim()) || niceNameFromFilename(trimmed.split('/').pop()), path: trimmed });
+      persistLocal();
+      render();
+    }
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) addFromFiles(e.target.files);
+      e.target.value = '';
+    });
+
+    manualAddBtn.addEventListener('click', addManually);
+
+    addRow.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      addRow.style.borderColor = 'var(--accent)';
+    });
+    addRow.addEventListener('dragleave', () => {
+      addRow.style.borderColor = '';
+    });
+    addRow.addEventListener('drop', (e) => {
+      e.preventDefault();
+      addRow.style.borderColor = '';
+      if (e.dataTransfer.files.length) addFromFiles(e.dataTransfer.files);
+    });
+
+    editToggle.addEventListener('click', () => {
+      editMode = !editMode;
+      render();
+    });
+
+    exportBtn.addEventListener('click', exportSite);
+
+    function exportSite(){
+      const dataEl = document.getElementById('siteData');
+      const jsonStr = JSON.stringify(state).replace(/<\//g, '<\\/');
+      dataEl.textContent = jsonStr;
+
+      const wasEdit = editMode;
+      editMode = false;
+      render();
+
+      const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+      editMode = wasEdit;
+      render();
+      dataEl.textContent = jsonStr;
+
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }
+
+    render();
+  })();
+  </script>
+</body>
+</html>
