@@ -1,570 +1,1177 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>เฉลยแบบฝึกหัด</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --paper:#F6F3EC;
-    --ink:#262622;
-    --ink-soft:#6B675D;
-    --accent:#3F6C51;
-    --accent-dark:#345943;
-    --accent-soft:#E3EAE2;
-    --line:#DDD7C7;
-    --card-bg:#FFFFFF;
-    --danger:#AA4A2F;
-    --danger-soft:#F3E4DD;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'IBM Plex Sans Thai', sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:640px;margin:0 auto;padding:48px 20px 80px;}
-  header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px;}
-  h1{font-size:26px;font-weight:700;margin:0 0 6px;letter-spacing:-0.01em;}
-  .subtitle{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .icon-btn{
-    width:40px;height:40px;flex-shrink:0;border-radius:10px;
-    border:1px solid var(--line);background:var(--card-bg);color:var(--ink-soft);
-    font-size:16px;cursor:pointer;transition:.15s border-color,.15s color,.15s background;
-  }
-  .icon-btn:hover{border-color:var(--accent);color:var(--accent);}
-  .icon-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
-  .icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="รวมเฉลยแบบฝึกหัดสำหรับเปิดอ่านได้ในลิงก์เดียว">
+  <meta name="theme-color" content="#f6f7f3">
+  <title>คลังเฉลยแบบฝึกหัด</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #f6f7f3;
+      --surface: #ffffff;
+      --surface-soft: #eef2ec;
+      --text: #17201b;
+      --muted: #657068;
+      --line: #dce2dc;
+      --brand: #255f45;
+      --brand-dark: #184632;
+      --brand-soft: #e0eee6;
+      --danger: #a73a35;
+      --danger-soft: #f9e7e5;
+      --shadow: 0 16px 45px rgba(29, 51, 39, 0.08);
+      --radius: 20px;
+    }
 
-  .panel{
-    background:var(--card-bg);border:1px solid var(--line);border-radius:12px;
-    padding:16px 18px;margin-bottom:20px;
-  }
-  .panel p{margin:0 0 10px;font-size:13.5px;color:var(--ink-soft);line-height:1.6;}
-  .panel a{color:var(--accent);}
-  .token-input{
-    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;
-    font-family:inherit;font-size:14px;margin-bottom:10px;background:var(--paper);
-  }
-  .primary-btn{
-    width:100%;padding:12px;border-radius:9px;border:none;
-    background:var(--accent);color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;
-  }
-  .primary-btn:hover{background:var(--accent-dark);}
-  .primary-btn:disabled{opacity:.6;cursor:default;}
-  .ghost-btn{
-    width:100%;padding:10px;border-radius:9px;border:1px solid var(--line);background:transparent;
-    color:var(--ink-soft);font-family:inherit;font-size:13.5px;cursor:pointer;margin-top:8px;
-  }
-  .ghost-btn:hover{border-color:var(--danger);color:var(--danger);}
-  .connected-badge{
-    display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;
-    color:var(--accent-dark);margin-bottom:12px;
-  }
-  .add-row{
-    display:flex;align-items:center;gap:10px;padding:14px 16px;
-    border:1.5px dashed var(--line);border-radius:12px;cursor:pointer;
-    color:var(--ink-soft);font-size:14.5px;transition:.15s border-color,.15s color;margin-bottom:10px;
-  }
-  .add-row:hover{border-color:var(--accent);color:var(--accent);}
-  .plus{font-size:18px;font-weight:600;}
-  .status-text{font-size:12.5px;color:var(--ink-soft);margin-top:10px;min-height:16px;}
+    * { box-sizing: border-box; }
 
-  .list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
-  .item{
-    display:flex;align-items:center;gap:10px;
-    background:var(--card-bg);border:1px solid var(--line);border-radius:12px;
-    padding:4px 6px 4px 14px;
-  }
-  .item-check{
-    width:20px;height:20px;border-radius:50%;flex-shrink:0;
-    border:1.5px solid var(--accent);color:var(--accent);
-    display:flex;align-items:center;justify-content:center;font-size:11px;
-  }
-  a.item-link{
-    flex:1;min-width:0;text-align:left;text-decoration:none;
-    font-family:inherit;font-size:15.5px;font-weight:500;color:var(--ink);
-    padding:13px 6px;cursor:pointer;border-radius:8px;display:block;
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  }
-  a.item-link:hover{color:var(--accent);}
-  .item-name-input{
-    flex:1;min-width:0;font-family:inherit;font-size:15.5px;font-weight:500;color:var(--ink);
-    padding:11px 8px;border:1px solid var(--accent);border-radius:8px;background:var(--accent-soft);
-  }
-  .item-actions{display:flex;gap:2px;flex-shrink:0;}
-  .item-actions button{
-    width:32px;height:32px;border-radius:8px;border:1px solid transparent;
-    background:transparent;color:var(--ink-soft);cursor:pointer;font-size:14px;
-  }
-  .item-actions button:hover{background:var(--accent-soft);color:var(--accent);}
-  .item-actions button.delete:hover{background:var(--danger-soft);color:var(--danger);}
-  .item-actions button:disabled{opacity:.4;cursor:default;}
+    html { scroll-behavior: smooth; }
 
-  .state-box{text-align:center;padding:44px 16px;color:var(--ink-soft);}
-  .state-box p{margin:4px 0;}
-  .state-sub{font-size:13.5px;}
-  .state-box .retry-btn{
-    margin-top:14px;border:1px solid var(--line);background:var(--card-bg);color:var(--ink);
-    font-family:inherit;font-size:13.5px;padding:9px 16px;border-radius:8px;cursor:pointer;
-  }
-  .state-box .retry-btn:hover{border-color:var(--accent);color:var(--accent);}
-</style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(185, 216, 196, 0.35), transparent 32rem),
+        var(--page);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai", sans-serif;
+      line-height: 1.55;
+    }
+
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .shell {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 56px 0 28px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: var(--brand);
+      font-size: 0.83rem;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #5b9f78;
+      content: "";
+      box-shadow: 0 0 0 5px rgba(91, 159, 120, 0.13);
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1.12;
+      letter-spacing: -0.045em;
+    }
+
+    .intro {
+      max-width: 650px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .admin-trigger {
+      display: inline-flex;
+      flex: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 650;
+      box-shadow: 0 8px 22px rgba(29, 51, 39, 0.05);
+      transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+    }
+
+    .admin-trigger:hover {
+      border-color: #aebbb2;
+      background: #fff;
+      transform: translateY(-1px);
+    }
+
+    .admin-trigger svg { width: 17px; height: 17px; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 32px 0 20px;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      top: 50%;
+      left: 17px;
+      width: 19px;
+      height: 19px;
+      color: #7b877f;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 18px 0 48px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text);
+      box-shadow: 0 8px 24px rgba(29, 51, 39, 0.04);
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .search-input:focus {
+      border-color: #6d9d81;
+      box-shadow: 0 0 0 4px rgba(82, 143, 106, 0.13);
+    }
+
+    .count {
+      flex: none;
+      color: var(--muted);
+      font-size: 0.92rem;
+      white-space: nowrap;
+    }
+
+    .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      padding-bottom: 72px;
+    }
+
+    .answer-card {
+      display: flex;
+      min-height: 154px;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 9px 26px rgba(29, 51, 39, 0.045);
+      transition: transform 170ms ease, border-color 170ms ease, box-shadow 170ms ease;
+    }
+
+    .answer-card:hover {
+      border-color: #a8b9ad;
+      box-shadow: var(--shadow);
+      transform: translateY(-3px);
+    }
+
+    .answer-number {
+      color: #6f7e74;
+      font-size: 0.78rem;
+      font-weight: 750;
+      letter-spacing: 0.07em;
+    }
+
+    .answer-title {
+      display: -webkit-box;
+      margin: 22px 0 0;
+      overflow: hidden;
+      font-size: 1.05rem;
+      font-weight: 720;
+      line-height: 1.45;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .answer-open {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 14px;
+      color: var(--brand);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .answer-open svg { width: 18px; height: 18px; }
+
+    .empty-state {
+      display: none;
+      margin: 12px 0 72px;
+      padding: 52px 24px;
+      border: 1px dashed #bdc8c0;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.56);
+      text-align: center;
+    }
+
+    .empty-state.is-visible { display: block; }
+    .empty-icon { font-size: 2rem; }
+    .empty-state h2 { margin: 12px 0 4px; font-size: 1.15rem; }
+    .empty-state p { margin: 0; color: var(--muted); }
+
+    .site-footer {
+      padding: 22px 0 34px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.84rem;
+      text-align: center;
+    }
+
+    dialog {
+      width: min(760px, calc(100% - 24px));
+      max-height: min(880px, calc(100vh - 32px));
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 24px;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 28px 90px rgba(15, 30, 21, 0.28);
+    }
+
+    dialog::backdrop {
+      background: rgba(18, 28, 22, 0.52);
+      backdrop-filter: blur(4px);
+    }
+
+    .dialog-inner {
+      max-height: min(880px, calc(100vh - 32px));
+      overflow: auto;
+    }
+
+    .dialog-head {
+      position: sticky;
+      z-index: 3;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+    }
+
+    .dialog-head h2 { margin: 0; font-size: 1.15rem; }
+    .dialog-body { padding: 24px; }
+
+    .icon-button {
+      display: inline-grid;
+      width: 38px;
+      height: 38px;
+      flex: none;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .icon-button svg { width: 18px; height: 18px; }
+
+    .notice {
+      margin-bottom: 20px;
+      padding: 14px 16px;
+      border: 1px solid #c7ddd0;
+      border-radius: 14px;
+      background: var(--brand-soft);
+      color: #204e39;
+      font-size: 0.9rem;
+    }
+
+    .notice strong { display: block; margin-bottom: 3px; }
+    .notice a { color: inherit; font-weight: 750; }
+
+    .field { display: grid; gap: 7px; }
+    .field + .field { margin-top: 15px; }
+    .field label { font-size: 0.88rem; font-weight: 700; }
+
+    .text-input {
+      width: 100%;
+      min-height: 46px;
+      padding: 0 14px;
+      border: 1px solid #cfd7d1;
+      border-radius: 12px;
+      outline: none;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .text-input:focus {
+      border-color: #6d9d81;
+      box-shadow: 0 0 0 3px rgba(82, 143, 106, 0.12);
+    }
+
+    .helper { margin: 0; color: var(--muted); font-size: 0.82rem; }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 16px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .button:hover:not(:disabled) { transform: translateY(-1px); }
+    .button:disabled { cursor: wait; opacity: 0.55; }
+    .button-primary { background: var(--brand); color: #fff; }
+    .button-primary:hover:not(:disabled) { background: var(--brand-dark); }
+    .button-secondary { border-color: var(--line); background: #fff; color: var(--text); }
+    .button-danger { background: var(--danger-soft); color: var(--danger); }
+
+    .admin-panel[hidden], .auth-panel[hidden] { display: none; }
+
+    .admin-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+
+    .connection {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .connection-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #46a46c;
+      box-shadow: 0 0 0 4px rgba(70, 164, 108, 0.13);
+    }
+
+    .upload-box {
+      padding: 20px;
+      border: 1px dashed #aabaae;
+      border-radius: 16px;
+      background: #fafbf9;
+    }
+
+    .upload-box h3, .manage-section h3 { margin: 0 0 5px; font-size: 1rem; }
+    .upload-box p { margin: 0 0 14px; color: var(--muted); font-size: 0.86rem; }
+    input[type="file"] { width: 100%; color: var(--muted); font-size: 0.88rem; }
+    input[type="file"]::file-selector-button {
+      margin-right: 10px;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 650;
+    }
+
+    .manage-section { margin-top: 28px; }
+    .manage-heading { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .manage-heading span { color: var(--muted); font-size: 0.82rem; }
+    .manage-list { display: grid; gap: 11px; }
+
+    .manage-item {
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+    }
+
+    .manage-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .manage-title { min-width: 0; }
+    .file-name {
+      display: block;
+      margin-top: 5px;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .manage-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+    .mini-button {
+      min-height: 36px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .mini-button.danger { border-color: #efd1ce; background: #fff9f8; color: var(--danger); }
+    .mini-button:disabled { cursor: wait; opacity: 0.5; }
+    .replace-input { display: none; }
+
+    .status-line {
+      min-height: 24px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.87rem;
+    }
+
+    .status-line.is-error { color: var(--danger); }
+    .status-line.is-success { color: var(--brand); }
+
+    .toast {
+      position: fixed;
+      z-index: 20;
+      right: 20px;
+      bottom: 20px;
+      max-width: min(390px, calc(100% - 40px));
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: #17201b;
+      color: #fff;
+      font-size: 0.9rem;
+      box-shadow: 0 14px 40px rgba(15, 30, 21, 0.25);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.is-visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 800px) {
+      .answer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 22px, 1080px); }
+      .site-header { padding-top: 30px; }
+      .topbar { display: block; }
+      .admin-trigger { margin-top: 22px; }
+      .toolbar { align-items: stretch; flex-direction: column; gap: 8px; }
+      .count { padding-left: 4px; }
+      .answer-grid { grid-template-columns: 1fr; }
+      .answer-card { min-height: 138px; }
+      .dialog-body { padding: 18px; }
+      .manage-main { grid-template-columns: 1fr; }
+      .admin-status { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
+  <header class="site-header">
+    <div class="shell topbar">
       <div>
-        <h1>เฉลยแบบฝึกหัด</h1>
-        <p class="subtitle" id="subtitle">กดปุ่มเพื่อเปิดเฉลยแต่ละไฟล์</p>
+        <p class="eyebrow">Answer Library</p>
+        <h1>คลังเฉลยแบบฝึกหัด</h1>
+        <p class="intro">รวมเฉลยทุกบทไว้ในที่เดียว เลือกหัวข้อที่ต้องการแล้วเปิดอ่านได้ทันที</p>
       </div>
-      <button id="settingsToggle" class="icon-btn" type="button" title="เชื่อมต่อ GitHub เพื่อจัดการ" aria-label="เชื่อมต่อ GitHub เพื่อจัดการ">&#128273;</button>
-    </header>
+      <button class="admin-trigger" id="open-admin" type="button" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+          <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+        </svg>
+        จัดการไฟล์
+      </button>
+    </div>
+  </header>
 
-    <main>
-      <div id="settingsPanel" class="panel" hidden>
+  <main class="shell">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <label for="search" class="visually-hidden">ค้นหาเฉลย</label>
+        <input class="search-input" id="search" type="search" placeholder="ค้นหาชื่อแบบฝึกหัด..." autocomplete="off">
+      </div>
+      <span class="count" id="answer-count">กำลังโหลด...</span>
+    </div>
 
-        <div id="loginBox">
-          <p>
-            วางเฉพาะบนเครื่อง/เบราว์เซอร์ของคุณเอง ใช้
-            <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Fine-grained personal access token</a>
-            ตั้งสิทธิ์แค่ repo นี้ repo เดียว และให้สิทธิ์ Contents: Read and write เท่านั้น
-          </p>
-          <input type="password" id="tokenInput" class="token-input" placeholder="วาง GitHub token ที่นี่" autocomplete="off">
-          <button id="connectBtn" class="primary-btn" type="button">เชื่อมต่อ</button>
-          <p class="status-text" id="loginStatus"></p>
-        </div>
+    <section class="answer-grid" id="answer-grid" aria-live="polite" aria-label="รายการเฉลย"></section>
 
-        <div id="connectedBox" hidden>
-          <p class="connected-badge">&#9989; เชื่อมต่อ GitHub แล้ว</p>
-          <label class="add-row" id="addRow" for="fileInput">
-            <span class="plus">+</span>
-            <span>อัปโหลด/อัปเดตไฟล์เฉลย (เลือกได้หลายไฟล์ หรือลากมาวาง)</span>
-          </label>
-          <input type="file" id="fileInput" accept=".html,.htm" multiple hidden>
-          <button id="disconnectBtn" class="ghost-btn" type="button">ตัดการเชื่อมต่อ</button>
-          <p class="status-text" id="adminStatus"></p>
-        </div>
+    <section class="empty-state" id="empty-state">
+      <div class="empty-icon" aria-hidden="true">📄</div>
+      <h2 id="empty-title">ยังไม่มีไฟล์เฉลย</h2>
+      <p id="empty-description">ผู้ดูแลสามารถเพิ่มไฟล์ HTML ได้จากเมนู “จัดการไฟล์”</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">จัดทำเพื่อรวบรวมเฉลยแบบฝึกหัดสำหรับนักเรียน</div>
+  </footer>
+
+  <dialog id="admin-dialog" aria-labelledby="admin-title">
+    <div class="dialog-inner">
+      <div class="dialog-head">
+        <h2 id="admin-title">จัดการคลังเฉลย</h2>
+        <button class="icon-button" id="close-admin" type="button" aria-label="ปิดหน้าต่าง">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18"></path>
+          </svg>
+        </button>
       </div>
 
-      <div id="loadingState" class="state-box">
-        <p>กำลังโหลดรายการเฉลย…</p>
-      </div>
+      <div class="dialog-body">
+        <section class="auth-panel" id="auth-panel">
+          <div class="notice">
+            <strong>โทเคนจะอยู่เฉพาะในหน่วยความจำของแท็บนี้</strong>
+            ระบบจะไม่บันทึกโทเคนลงในเบราว์เซอร์หรือ repository และเมื่อล้างหน้าเว็บจะต้องใส่ใหม่
+          </div>
 
-      <div id="errorState" class="state-box" hidden>
-        <p id="errorMsg">โหลดรายการไม่สำเร็จ</p>
-        <p class="state-sub" id="errorSub"></p>
-        <button id="retryBtn" class="retry-btn" type="button">ลองใหม่อีกครั้ง</button>
-      </div>
+          <form id="auth-form">
+            <div class="field">
+              <label for="github-token">GitHub fine-grained token</label>
+              <input class="text-input" id="github-token" type="password" inputmode="text" autocomplete="off" required placeholder="github_pat_...">
+              <p class="helper">จำกัด token ให้ใช้ได้เฉพาะ repository “Answer” และอนุญาต Contents: Read and write เท่านั้น — <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">สร้าง token ที่ GitHub</a></p>
+            </div>
+            <div class="button-row">
+              <button class="button button-primary" id="connect-button" type="submit">เชื่อมต่อ GitHub</button>
+            </div>
+            <p class="status-line" id="auth-status" role="status"></p>
+          </form>
+        </section>
 
-      <div id="emptyState" class="state-box" hidden>
-        <p>ยังไม่มีไฟล์เฉลย</p>
-        <p class="state-sub" id="emptySub">กดไอคอนกุญแจมุมขวาบน แล้วเชื่อมต่อ GitHub เพื่อเพิ่มไฟล์ได้เลย</p>
-      </div>
+        <section class="admin-panel" id="admin-panel" hidden>
+          <div class="admin-status">
+            <div class="connection">
+              <span class="connection-dot" aria-hidden="true"></span>
+              <span id="connection-label">เชื่อมต่อแล้ว</span>
+            </div>
+            <button class="button button-secondary" id="disconnect-button" type="button">ออกจากโหมดจัดการ</button>
+          </div>
 
-      <ul id="list" class="list" hidden></ul>
-    </main>
-  </div>
+          <form class="upload-box" id="upload-form">
+            <h3>เพิ่มไฟล์เฉลย</h3>
+            <p>เลือกไฟล์ HTML ได้หลายไฟล์ ระบบจะสร้างปุ่มจากชื่อไฟล์โดยอัตโนมัติ</p>
+            <input id="upload-files" type="file" accept=".html,text/html" multiple required>
+            <div class="button-row">
+              <button class="button button-primary" id="upload-button" type="submit">อัปโหลดและสร้างปุ่ม</button>
+            </div>
+          </form>
+
+          <section class="manage-section">
+            <div class="manage-heading">
+              <h3>ปุ่มที่มีอยู่</h3>
+              <span>แก้ชื่อ อัปเดต หรือลบ</span>
+            </div>
+            <div class="manage-list" id="manage-list"></div>
+          </section>
+
+          <p class="status-line" id="admin-message" role="status"></p>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-  (function(){
-    const TOKEN_KEY = 'answerKeyHub:ghToken';
+    (() => {
+      "use strict";
 
-    // ---------- helpers ----------
-    function uid(){
-      return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-    }
-    function niceNameFromFilename(filename){
-      return filename.replace(/\.html?$/i, '');
-    }
-    function b64EncodeUnicode(str){
-      const bytes = new TextEncoder().encode(str);
-      let binary = '';
-      for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-      return btoa(binary);
-    }
-    function b64DecodeUnicode(str){
-      const binary = atob(str.replace(/\s/g, ''));
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-      return new TextDecoder().decode(bytes);
-    }
-    function detectRepoInfo(){
-      const params = new URLSearchParams(location.search);
-      const qOwner = params.get('owner');
-      const qRepo = params.get('repo');
-      if (qOwner && qRepo) return { owner: qOwner, repo: qRepo };
+      const CONFIG = {
+        owner: "songsith305-beep",
+        repo: "Answer",
+        branch: "main",
+        manifest: "answers.json"
+      };
 
-      const hostParts = location.hostname.split('.');
-      if (hostParts.length >= 3 && hostParts[1] === 'github' && hostParts[2] === 'io'){
-        const owner = hostParts[0];
-        const pathParts = location.pathname.split('/').filter(Boolean);
-        const repo = pathParts.length ? pathParts[0] : (owner + '.github.io');
-        return { owner: owner, repo: repo };
-      }
-      return null;
-    }
+      const state = {
+        answers: [],
+        token: "",
+        busy: false
+      };
 
-    const repoInfo = detectRepoInfo();
-    let token = null;
-    try{ token = localStorage.getItem(TOKEN_KEY) || null; }catch(e){}
+      const elements = {
+        grid: document.querySelector("#answer-grid"),
+        count: document.querySelector("#answer-count"),
+        search: document.querySelector("#search"),
+        empty: document.querySelector("#empty-state"),
+        emptyTitle: document.querySelector("#empty-title"),
+        emptyDescription: document.querySelector("#empty-description"),
+        dialog: document.querySelector("#admin-dialog"),
+        openAdmin: document.querySelector("#open-admin"),
+        closeAdmin: document.querySelector("#close-admin"),
+        authPanel: document.querySelector("#auth-panel"),
+        adminPanel: document.querySelector("#admin-panel"),
+        authForm: document.querySelector("#auth-form"),
+        tokenInput: document.querySelector("#github-token"),
+        connectButton: document.querySelector("#connect-button"),
+        authStatus: document.querySelector("#auth-status"),
+        disconnectButton: document.querySelector("#disconnect-button"),
+        connectionLabel: document.querySelector("#connection-label"),
+        uploadForm: document.querySelector("#upload-form"),
+        uploadFiles: document.querySelector("#upload-files"),
+        uploadButton: document.querySelector("#upload-button"),
+        manageList: document.querySelector("#manage-list"),
+        adminMessage: document.querySelector("#admin-message"),
+        toast: document.querySelector("#toast")
+      };
 
-    let manifestSha = null;
-    let state = [];
-
-    // ---------- DOM refs ----------
-    const listEl = document.getElementById('list');
-    const loadingEl = document.getElementById('loadingState');
-    const errorEl = document.getElementById('errorState');
-    const errorMsgEl = document.getElementById('errorMsg');
-    const errorSubEl = document.getElementById('errorSub');
-    const emptyEl = document.getElementById('emptyState');
-    const emptySubEl = document.getElementById('emptySub');
-    const retryBtn = document.getElementById('retryBtn');
-
-    const settingsToggle = document.getElementById('settingsToggle');
-    const settingsPanel = document.getElementById('settingsPanel');
-    const loginBox = document.getElementById('loginBox');
-    const connectedBox = document.getElementById('connectedBox');
-    const tokenInput = document.getElementById('tokenInput');
-    const connectBtn = document.getElementById('connectBtn');
-    const loginStatus = document.getElementById('loginStatus');
-    const disconnectBtn = document.getElementById('disconnectBtn');
-    const adminStatus = document.getElementById('adminStatus');
-    const fileInput = document.getElementById('fileInput');
-    const addRow = document.getElementById('addRow');
-
-    // ---------- GitHub API ----------
-    function apiBase(){
-      return 'https://api.github.com/repos/' + repoInfo.owner + '/' + repoInfo.repo + '/contents/';
-    }
-    function authHeaders(){
-      const h = { 'Accept': 'application/vnd.github+json' };
-      if (token) h['Authorization'] = 'token ' + token;
-      return h;
-    }
-    async function apiGet(path){
-      const res = await fetch(apiBase() + encodeURIComponent(path).replace(/%2F/g, '/'), { headers: authHeaders() });
-      if (res.status === 404) return { notFound: true };
-      if (!res.ok) throw new Error('GET ' + path + ' failed: ' + res.status);
-      const json = await res.json();
-      return { notFound: false, sha: json.sha, content: json.content ? b64DecodeUnicode(json.content) : '' };
-    }
-    async function apiPut(path, contentStr, message, sha){
-      const body = { message: message, content: b64EncodeUnicode(contentStr) };
-      if (sha) body.sha = sha;
-      const res = await fetch(apiBase() + encodeURIComponent(path).replace(/%2F/g, '/'), {
-        method: 'PUT',
-        headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
-        body: JSON.stringify(body)
-      });
-      if (!res.ok){
-        const errJson = await res.json().catch(() => ({}));
-        throw new Error(errJson.message || ('PUT ' + path + ' failed: ' + res.status));
-      }
-      const json = await res.json();
-      return json.content.sha;
-    }
-    async function apiDelete(path, sha, message){
-      const res = await fetch(apiBase() + encodeURIComponent(path).replace(/%2F/g, '/'), {
-        method: 'DELETE',
-        headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
-        body: JSON.stringify({ message: message, sha: sha })
-      });
-      if (!res.ok){
-        const errJson = await res.json().catch(() => ({}));
-        throw new Error(errJson.message || ('DELETE ' + path + ' failed: ' + res.status));
-      }
-    }
-
-    // ---------- manifest ----------
-    async function loadManifest(){
-      const r = await apiGet('manifest.json');
-      if (r.notFound){
-        state = [];
-        manifestSha = null;
-      } else {
-        manifestSha = r.sha;
-        try{ state = JSON.parse(r.content); }catch(e){ state = []; }
-      }
-    }
-    async function saveManifest(){
-      const newSha = await apiPut('manifest.json', JSON.stringify(state), 'Update manifest.json', manifestSha);
-      manifestSha = newSha;
-    }
-
-    // ---------- render ----------
-    function showState(which){
-      loadingEl.hidden = which !== 'loading';
-      errorEl.hidden = which !== 'error';
-      emptyEl.hidden = which !== 'empty';
-      listEl.hidden = which !== 'list';
-    }
-
-    function render(){
-      if (!state.length){
-        emptySubEl.textContent = token
-          ? 'กดปุ่ม "อัปโหลด/อัปเดตไฟล์เฉลย" ในแผงตั้งค่าเพื่อเพิ่มไฟล์แรก'
-          : 'กดไอคอนกุญแจมุมขวาบน แล้วเชื่อมต่อ GitHub เพื่อเพิ่มไฟล์ได้เลย';
-        showState('empty');
-        return;
+      function normalizeAnswers(value) {
+        if (!Array.isArray(value)) return [];
+        return value
+          .filter((item) => item && typeof item.title === "string" && isAllowedAnswerPath(item.file))
+          .map((item, index) => ({
+            id: typeof item.id === "string" ? item.id : `answer-${index + 1}`,
+            title: item.title.trim() || `เฉลยชุดที่ ${index + 1}`,
+            file: item.file,
+            updatedAt: typeof item.updatedAt === "string" ? item.updatedAt : ""
+          }));
       }
 
-      listEl.innerHTML = '';
-      state.forEach(item => {
-        const li = document.createElement('li');
-        li.className = 'item';
+      function isAllowedAnswerPath(path) {
+        return typeof path === "string" && /^answers\/[\p{L}\p{N}._-]+\.html$/iu.test(path) && !path.includes("..");
+      }
 
-        const check = document.createElement('span');
-        check.className = 'item-check';
-        check.textContent = '\u2713';
-        li.appendChild(check);
+      function publicHref(path) {
+        return path.split("/").map(encodeURIComponent).join("/");
+      }
 
-        const link = document.createElement('a');
-        link.className = 'item-link';
-        link.href = item.path;
-        link.target = '_blank';
-        link.rel = 'noopener';
-        link.textContent = item.name;
-        li.appendChild(link);
+      function createIcon() {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("stroke", "currentColor");
+        svg.setAttribute("stroke-width", "2");
+        svg.setAttribute("aria-hidden", "true");
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", "M7 17 17 7M8 7h9v9");
+        svg.append(path);
+        return svg;
+      }
 
-        if (token){
-          const actions = document.createElement('div');
-          actions.className = 'item-actions';
+      function renderPublicList() {
+        const term = elements.search.value.trim().toLocaleLowerCase("th");
+        const filtered = state.answers.filter((item) => item.title.toLocaleLowerCase("th").includes(term));
+        elements.grid.replaceChildren();
 
-          const renameBtn = document.createElement('button');
-          renameBtn.type = 'button';
-          renameBtn.title = 'เปลี่ยนชื่อปุ่ม';
-          renameBtn.textContent = '\u270E';
-          renameBtn.addEventListener('click', () => startRename(item.id, li, link));
-          actions.appendChild(renameBtn);
+        filtered.forEach((item, index) => {
+          const link = document.createElement("a");
+          link.className = "answer-card";
+          link.href = publicHref(item.file);
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
 
-          const linkBtn = document.createElement('button');
-          linkBtn.type = 'button';
-          linkBtn.title = 'แก้ไฟล์ที่ปุ่มนี้ชี้ไป';
-          linkBtn.textContent = '\u{1F517}';
-          linkBtn.addEventListener('click', () => editPath(item.id));
-          actions.appendChild(linkBtn);
+          const number = document.createElement("span");
+          number.className = "answer-number";
+          number.textContent = `แบบฝึกหัด ${String(index + 1).padStart(2, "0")}`;
 
-          const delBtn = document.createElement('button');
-          delBtn.type = 'button';
-          delBtn.className = 'delete';
-          delBtn.title = 'ลบ';
-          delBtn.textContent = '\u{1F5D1}';
-          delBtn.addEventListener('click', () => removeItem(item.id));
-          actions.appendChild(delBtn);
+          const title = document.createElement("span");
+          title.className = "answer-title";
+          title.textContent = item.title;
 
-          li.appendChild(actions);
+          const open = document.createElement("span");
+          open.className = "answer-open";
+          const openText = document.createElement("span");
+          openText.textContent = "เปิดเฉลย";
+          open.append(openText, createIcon());
+
+          link.append(number, title, open);
+          elements.grid.append(link);
+        });
+
+        elements.count.textContent = term
+          ? `พบ ${filtered.length} จาก ${state.answers.length} รายการ`
+          : `${state.answers.length} รายการ`;
+
+        const isEmpty = filtered.length === 0;
+        elements.empty.classList.toggle("is-visible", isEmpty);
+        elements.grid.hidden = isEmpty;
+
+        if (term && isEmpty) {
+          elements.emptyTitle.textContent = "ไม่พบชื่อที่ค้นหา";
+          elements.emptyDescription.textContent = "ลองใช้คำค้นอื่น หรือเคลียร์ช่องค้นหา";
+        } else {
+          elements.emptyTitle.textContent = "ยังไม่มีไฟล์เฉลย";
+          elements.emptyDescription.textContent = "ผู้ดูแลสามารถเพิ่มไฟล์ HTML ได้จากเมนู “จัดการไฟล์”";
+        }
+      }
+
+      async function loadPublicAnswers() {
+        try {
+          const response = await fetch(`${CONFIG.manifest}?v=${Date.now()}`, { cache: "no-store" });
+          if (!response.ok) throw new Error("โหลดรายการไม่สำเร็จ");
+          state.answers = normalizeAnswers(await response.json());
+        } catch (error) {
+          state.answers = [];
+          console.warn(error);
+        }
+        renderPublicList();
+      }
+
+      function apiUrl(path) {
+        return `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}${path}`;
+      }
+
+      async function apiRequest(path, options = {}) {
+        if (!state.token) throw new Error("กรุณาเชื่อมต่อ GitHub ก่อน");
+        const headers = {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${state.token}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+          ...options.headers
+        };
+        if (options.body) headers["Content-Type"] = "application/json";
+
+        const response = await fetch(apiUrl(path), { ...options, headers });
+        let data = null;
+        const responseText = await response.text();
+        if (responseText) {
+          try { data = JSON.parse(responseText); } catch { data = responseText; }
         }
 
-        listEl.appendChild(li);
-      });
+        if (!response.ok) {
+          const reason = data && data.message ? data.message : `GitHub ตอบกลับ ${response.status}`;
+          const error = new Error(reason);
+          error.status = response.status;
+          throw error;
+        }
+        return data;
+      }
 
-      showState('list');
-    }
+      function bytesToBase64(bytes) {
+        let binary = "";
+        const chunkSize = 0x8000;
+        for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+          binary += String.fromCharCode(...bytes.subarray(offset, offset + chunkSize));
+        }
+        return btoa(binary);
+      }
 
-    // ---------- admin actions ----------
-    function setAdminStatus(msg){ adminStatus.textContent = msg || ''; }
+      function textToBase64(text) {
+        return bytesToBase64(new TextEncoder().encode(text));
+      }
 
-    function startRename(id, li, linkEl){
-      const item = state.find(x => x.id === id);
-      if (!item) return;
-      const input = document.createElement('input');
-      input.className = 'item-name-input';
-      input.value = item.name;
-      li.replaceChild(input, linkEl);
-      input.focus();
-      input.select();
+      function decodeBase64Text(content) {
+        const cleaned = content.replace(/\s/g, "");
+        const binary = atob(cleaned);
+        const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+        return new TextDecoder().decode(bytes);
+      }
 
-      async function commit(){
-        const v = input.value.trim();
-        if (v && v !== item.name){
-          item.name = v;
-          try{
-            setAdminStatus('กำลังบันทึกชื่อ…');
-            await saveManifest();
-            setAdminStatus('บันทึกแล้ว');
-          }catch(e){
-            setAdminStatus('บันทึกไม่สำเร็จ: ' + e.message);
+      async function loadAdminAnswers() {
+        try {
+          const data = await apiRequest(`/contents/${encodeURIComponent(CONFIG.manifest)}?ref=${encodeURIComponent(CONFIG.branch)}`);
+          state.answers = normalizeAnswers(JSON.parse(decodeBase64Text(data.content)));
+        } catch (error) {
+          if (error.status === 404) {
+            state.answers = [];
+          } else {
+            throw error;
           }
         }
-        render();
+        renderPublicList();
+        renderManageList();
       }
-      input.addEventListener('blur', commit);
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter'){ e.preventDefault(); input.blur(); }
-        if (e.key === 'Escape'){ render(); }
-      });
-    }
 
-    async function editPath(id){
-      const item = state.find(x => x.id === id);
-      if (!item) return;
-      const v = prompt('ไฟล์ที่ปุ่มนี้จะเปิด (ต้องตรงกับไฟล์จริงบน GitHub):', item.path);
-      if (v === null) return;
-      const trimmed = v.trim();
-      if (!trimmed || trimmed === item.path) return;
-      item.path = trimmed;
-      try{
-        setAdminStatus('กำลังบันทึก…');
-        await saveManifest();
-        setAdminStatus('บันทึกแล้ว');
-      }catch(e){
-        setAdminStatus('บันทึกไม่สำเร็จ: ' + e.message);
+      async function createBlob(base64Content) {
+        return apiRequest("/git/blobs", {
+          method: "POST",
+          body: JSON.stringify({ content: base64Content, encoding: "base64" })
+        });
       }
-      render();
-    }
 
-    async function removeItem(id){
-      const item = state.find(x => x.id === id);
-      if (!item) return;
-      if (!confirm('ลบปุ่ม "' + item.name + '" ออกจากรายการใช่หรือไม่?')) return;
-      const alsoDeleteFile = confirm('ต้องการลบไฟล์จริง "' + item.path + '" บน GitHub ด้วยหรือไม่?\n\nกด OK เพื่อลบไฟล์ถาวร หรือ Cancel เพื่อลบแค่ปุ่ม (ไฟล์ยังอยู่บน GitHub)');
+      async function commitChanges(message, changes) {
+        const ref = await apiRequest(`/git/ref/heads/${encodeURIComponent(CONFIG.branch)}`);
+        const baseCommitSha = ref.object.sha;
+        const baseCommit = await apiRequest(`/git/commits/${baseCommitSha}`);
 
-      state = state.filter(x => x.id !== id);
-      try{
-        setAdminStatus('กำลังบันทึก…');
-        await saveManifest();
-        if (alsoDeleteFile){
-          const f = await apiGet(item.path);
-          if (!f.notFound){
-            await apiDelete(item.path, f.sha, 'Delete ' + item.path);
+        const entries = await Promise.all(changes.map(async (change) => {
+          if (change.content === null) {
+            return { path: change.path, mode: "100644", type: "blob", sha: null };
           }
-        }
-        setAdminStatus('ลบเรียบร้อย');
-      }catch(e){
-        setAdminStatus('เกิดข้อผิดพลาด: ' + e.message);
-      }
-      render();
-    }
+          const blob = await createBlob(change.content);
+          return { path: change.path, mode: "100644", type: "blob", sha: blob.sha };
+        }));
 
-    async function addFiles(fileList){
-      const files = Array.from(fileList).filter(f => /\.html?$/i.test(f.name));
-      if (!files.length){
-        alert('กรุณาเลือกไฟล์ .html เท่านั้น');
-        return;
+        const tree = await apiRequest("/git/trees", {
+          method: "POST",
+          body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: entries })
+        });
+        const commit = await apiRequest("/git/commits", {
+          method: "POST",
+          body: JSON.stringify({ message, tree: tree.sha, parents: [baseCommitSha] })
+        });
+        await apiRequest(`/git/refs/heads/${encodeURIComponent(CONFIG.branch)}`, {
+          method: "PATCH",
+          body: JSON.stringify({ sha: commit.sha, force: false })
+        });
       }
-      let changed = false;
-      for (const file of files){
-        setAdminStatus('กำลังอัปโหลด ' + file.name + ' …');
-        try{
-          const text = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsText(file, 'UTF-8');
+
+      function manifestChange(answers = state.answers) {
+        const content = `${JSON.stringify(answers, null, 2)}\n`;
+        return { path: CONFIG.manifest, content: textToBase64(content) };
+      }
+
+      function slugifyFileName(name) {
+        const stem = name.replace(/\.html?$/i, "").normalize("NFKC");
+        const slug = stem
+          .toLocaleLowerCase("th")
+          .replace(/[^\p{L}\p{N}._-]+/gu, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 90);
+        return slug || `answer-${Date.now()}`;
+      }
+
+      function humanTitle(name) {
+        return name
+          .replace(/\.html?$/i, "")
+          .replace(/[-_]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim() || "เฉลยแบบฝึกหัด";
+      }
+
+      function uniquePath(fileName, reservedPaths) {
+        const stem = slugifyFileName(fileName);
+        let candidate = `answers/${stem}.html`;
+        let counter = 2;
+        while (reservedPaths.has(candidate)) {
+          candidate = `answers/${stem}-${counter}.html`;
+          counter += 1;
+        }
+        reservedPaths.add(candidate);
+        return candidate;
+      }
+
+      function makeId() {
+        if (crypto.randomUUID) return crypto.randomUUID();
+        return `answer-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      }
+
+      function setMessage(element, message, type = "") {
+        element.textContent = message;
+        element.classList.toggle("is-error", type === "error");
+        element.classList.toggle("is-success", type === "success");
+      }
+
+      let toastTimer = 0;
+      function showToast(message) {
+        clearTimeout(toastTimer);
+        elements.toast.textContent = message;
+        elements.toast.classList.add("is-visible");
+        toastTimer = window.setTimeout(() => elements.toast.classList.remove("is-visible"), 3200);
+      }
+
+      function setBusy(value) {
+        state.busy = value;
+        elements.uploadButton.disabled = value;
+        elements.disconnectButton.disabled = value;
+        elements.manageList.querySelectorAll("button, input").forEach((control) => { control.disabled = value; });
+      }
+
+      function renderManageList() {
+        elements.manageList.replaceChildren();
+
+        if (state.answers.length === 0) {
+          const message = document.createElement("p");
+          message.className = "helper";
+          message.textContent = "ยังไม่มีปุ่ม ลองอัปโหลดไฟล์ HTML ด้านบน";
+          elements.manageList.append(message);
+          return;
+        }
+
+        state.answers.forEach((item) => {
+          const row = document.createElement("article");
+          row.className = "manage-item";
+
+          const main = document.createElement("div");
+          main.className = "manage-main";
+
+          const titleWrap = document.createElement("div");
+          titleWrap.className = "manage-title";
+          const titleInput = document.createElement("input");
+          titleInput.className = "text-input";
+          titleInput.value = item.title;
+          titleInput.setAttribute("aria-label", `ชื่อปุ่ม ${item.title}`);
+          const fileName = document.createElement("span");
+          fileName.className = "file-name";
+          fileName.textContent = item.file;
+          titleWrap.append(titleInput, fileName);
+
+          const actions = document.createElement("div");
+          actions.className = "manage-actions";
+
+          const save = document.createElement("button");
+          save.className = "mini-button";
+          save.type = "button";
+          save.textContent = "บันทึกชื่อ";
+          save.addEventListener("click", () => renameAnswer(item.id, titleInput.value));
+
+          const replaceLabel = document.createElement("label");
+          replaceLabel.className = "mini-button";
+          replaceLabel.textContent = "อัปเดตไฟล์";
+          replaceLabel.tabIndex = 0;
+          replaceLabel.setAttribute("role", "button");
+          const replaceInput = document.createElement("input");
+          replaceInput.className = "replace-input";
+          replaceInput.type = "file";
+          replaceInput.accept = ".html,text/html";
+          replaceInput.addEventListener("change", () => {
+            const file = replaceInput.files && replaceInput.files[0];
+            if (file) replaceAnswerFile(item.id, file);
           });
+          replaceLabel.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              replaceInput.click();
+            }
+          });
+          replaceLabel.append(replaceInput);
 
-          const existing = await apiGet(file.name);
-          await apiPut(file.name, text, (existing.notFound ? 'Add ' : 'Update ') + file.name, existing.notFound ? null : existing.sha);
+          const remove = document.createElement("button");
+          remove.className = "mini-button danger";
+          remove.type = "button";
+          remove.textContent = "ลบ";
+          remove.addEventListener("click", () => deleteAnswer(item.id));
 
-          if (!state.some(x => x.path === file.name)){
-            state.push({ id: uid(), name: niceNameFromFilename(file.name), path: file.name });
-            changed = true;
+          actions.append(save, replaceLabel, remove);
+          main.append(titleWrap, actions);
+          row.append(main);
+          elements.manageList.append(row);
+        });
+      }
+
+      async function runAdminAction(progressMessage, action) {
+        if (state.busy) return;
+        setBusy(true);
+        setMessage(elements.adminMessage, progressMessage);
+        try {
+          await action();
+        } catch (error) {
+          console.error(error);
+          const detail = error.status === 422
+            ? "ข้อมูลบน GitHub เปลี่ยนระหว่างทำรายการ กรุณาปิดแล้วเปิดโหมดจัดการใหม่"
+            : error.message;
+          setMessage(elements.adminMessage, `ไม่สำเร็จ: ${detail}`, "error");
+        } finally {
+          setBusy(false);
+          renderManageList();
+        }
+      }
+
+      async function renameAnswer(id, nextTitle) {
+        const title = nextTitle.trim();
+        if (!title) {
+          setMessage(elements.adminMessage, "ชื่อปุ่มต้องไม่ว่าง", "error");
+          return;
+        }
+        const current = state.answers.find((item) => item.id === id);
+        if (!current || current.title === title) return;
+
+        await runAdminAction("กำลังบันทึกชื่อปุ่ม...", async () => {
+          const next = state.answers.map((item) => item.id === id ? { ...item, title } : item);
+          await commitChanges(`Rename answer button: ${title}`, [manifestChange(next)]);
+          state.answers = next;
+          renderPublicList();
+          setMessage(elements.adminMessage, "เปลี่ยนชื่อปุ่มแล้ว", "success");
+          showToast("เปลี่ยนชื่อปุ่มเรียบร้อย");
+        });
+      }
+
+      async function replaceAnswerFile(id, file) {
+        if (!/\.html?$/i.test(file.name)) {
+          setMessage(elements.adminMessage, "เลือกได้เฉพาะไฟล์ .html", "error");
+          return;
+        }
+        const current = state.answers.find((item) => item.id === id);
+        if (!current) return;
+
+        await runAdminAction(`กำลังอัปเดต ${current.title}...`, async () => {
+          const updatedAt = new Date().toISOString();
+          const next = state.answers.map((item) => item.id === id ? { ...item, updatedAt } : item);
+          const fileContent = bytesToBase64(new Uint8Array(await file.arrayBuffer()));
+          await commitChanges(`Update answer: ${current.title}`, [
+            { path: current.file, content: fileContent },
+            manifestChange(next)
+          ]);
+          state.answers = next;
+          renderPublicList();
+          setMessage(elements.adminMessage, "อัปเดตไฟล์เดิมแล้ว URL ของปุ่มไม่เปลี่ยน", "success");
+          showToast("อัปเดตไฟล์เรียบร้อย");
+        });
+      }
+
+      async function deleteAnswer(id) {
+        const current = state.answers.find((item) => item.id === id);
+        if (!current) return;
+        const confirmed = window.confirm(`ลบปุ่ม “${current.title}” และไฟล์ ${current.file} ออกจาก GitHub ใช่หรือไม่?`);
+        if (!confirmed) return;
+
+        await runAdminAction(`กำลังลบ ${current.title}...`, async () => {
+          const next = state.answers.filter((item) => item.id !== id);
+          await commitChanges(`Delete answer: ${current.title}`, [
+            { path: current.file, content: null },
+            manifestChange(next)
+          ]);
+          state.answers = next;
+          renderPublicList();
+          setMessage(elements.adminMessage, "ลบปุ่มและไฟล์จาก GitHub แล้ว", "success");
+          showToast("ลบปุ่มและไฟล์เรียบร้อย");
+        });
+      }
+
+      elements.search.addEventListener("input", renderPublicList);
+
+      elements.openAdmin.addEventListener("click", () => {
+        elements.dialog.showModal();
+        window.setTimeout(() => {
+          if (!state.token) elements.tokenInput.focus();
+        }, 30);
+      });
+
+      elements.closeAdmin.addEventListener("click", () => elements.dialog.close());
+      elements.dialog.addEventListener("click", (event) => {
+        if (event.target === elements.dialog && !state.busy) elements.dialog.close();
+      });
+
+      elements.authForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const token = elements.tokenInput.value.trim();
+        if (!token) return;
+
+        elements.connectButton.disabled = true;
+        setMessage(elements.authStatus, "กำลังตรวจสอบสิทธิ์...");
+        state.token = token;
+        elements.tokenInput.value = "";
+
+        try {
+          const repo = await apiRequest("");
+          CONFIG.branch = repo.default_branch || CONFIG.branch;
+          await loadAdminAnswers();
+          elements.connectionLabel.textContent = `เชื่อมต่อ ${CONFIG.owner}/${CONFIG.repo} · ${CONFIG.branch}`;
+          elements.authPanel.hidden = true;
+          elements.adminPanel.hidden = false;
+          setMessage(elements.authStatus, "");
+        } catch (error) {
+          state.token = "";
+          setMessage(elements.authStatus, `เชื่อมต่อไม่สำเร็จ: ${error.message}`, "error");
+          elements.tokenInput.focus();
+        } finally {
+          elements.connectButton.disabled = false;
+        }
+      });
+
+      elements.disconnectButton.addEventListener("click", () => {
+        state.token = "";
+        elements.adminPanel.hidden = true;
+        elements.authPanel.hidden = false;
+        setMessage(elements.adminMessage, "");
+        setMessage(elements.authStatus, "ออกจากโหมดจัดการแล้ว", "success");
+        elements.tokenInput.focus();
+      });
+
+      elements.uploadForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const files = Array.from(elements.uploadFiles.files || []);
+        if (files.length === 0) return;
+        if (files.some((file) => !/\.html?$/i.test(file.name))) {
+          setMessage(elements.adminMessage, "ทุกไฟล์ต้องเป็น .html", "error");
+          return;
+        }
+
+        await runAdminAction(`กำลังอัปโหลด ${files.length} ไฟล์...`, async () => {
+          const reserved = new Set(state.answers.map((item) => item.file));
+          const now = new Date().toISOString();
+          const additions = [];
+          const fileChanges = [];
+
+          for (const file of files) {
+            const path = uniquePath(file.name, reserved);
+            additions.push({ id: makeId(), title: humanTitle(file.name), file: path, updatedAt: now });
+            fileChanges.push({ path, content: bytesToBase64(new Uint8Array(await file.arrayBuffer())) });
           }
-        }catch(e){
-          setAdminStatus('อัปโหลด ' + file.name + ' ไม่สำเร็จ: ' + e.message);
-        }
-      }
-      if (changed){
-        try{ await saveManifest(); }catch(e){ setAdminStatus('บันทึกรายการไม่สำเร็จ: ' + e.message); }
-      }
-      setAdminStatus('อัปโหลดเสร็จสิ้น');
-      render();
-    }
 
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length) addFiles(e.target.files);
-      e.target.value = '';
-    });
-    addRow.addEventListener('dragover', (e) => { e.preventDefault(); addRow.style.borderColor = 'var(--accent)'; });
-    addRow.addEventListener('dragleave', () => { addRow.style.borderColor = ''; });
-    addRow.addEventListener('drop', (e) => {
-      e.preventDefault();
-      addRow.style.borderColor = '';
-      if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
-    });
+          const next = [...state.answers, ...additions];
+          await commitChanges(`Add ${files.length} answer file${files.length > 1 ? "s" : ""}`, [
+            ...fileChanges,
+            manifestChange(next)
+          ]);
+          state.answers = next;
+          elements.uploadForm.reset();
+          renderPublicList();
+          setMessage(elements.adminMessage, `อัปโหลด ${files.length} ไฟล์และสร้างปุ่มแล้ว`, "success");
+          showToast(`เพิ่มเฉลย ${files.length} รายการเรียบร้อย`);
+        });
+      });
 
-    // ---------- connect / disconnect ----------
-    function showConnectedUI(isConnected){
-      loginBox.hidden = isConnected;
-      connectedBox.hidden = !isConnected;
-      settingsToggle.classList.toggle('active', isConnected);
-    }
+      window.addEventListener("pagehide", () => { state.token = ""; });
 
-    connectBtn.addEventListener('click', async () => {
-      const v = tokenInput.value.trim();
-      if (!v){ loginStatus.textContent = 'กรุณาวาง token ก่อน'; return; }
-      connectBtn.disabled = true;
-      loginStatus.textContent = 'กำลังตรวจสอบ token…';
-      token = v;
-      try{
-        await loadManifest();
-        try{ localStorage.setItem(TOKEN_KEY, token); }catch(e){}
-        loginStatus.textContent = '';
-        showConnectedUI(true);
-        render();
-      }catch(e){
-        token = null;
-        loginStatus.textContent = 'เชื่อมต่อไม่สำเร็จ: token ไม่ถูกต้องหรือไม่มีสิทธิ์เข้าถึง repo นี้';
-      }
-      connectBtn.disabled = false;
-    });
-
-    disconnectBtn.addEventListener('click', () => {
-      token = null;
-      try{ localStorage.removeItem(TOKEN_KEY); }catch(e){}
-      showConnectedUI(false);
-      render();
-    });
-
-    settingsToggle.addEventListener('click', () => {
-      settingsPanel.hidden = !settingsPanel.hidden;
-    });
-
-    retryBtn.addEventListener('click', init);
-
-    // ---------- init ----------
-    async function init(){
-      showState('loading');
-
-      if (!repoInfo){
-        errorMsgEl.textContent = 'ตรวจไม่พบว่านี่คือเว็บบน GitHub Pages';
-        errorSubEl.textContent = 'ฟีเจอร์นี้จะทำงานอัตโนมัติเมื่อ deploy ขึ้น GitHub Pages จริง (ลิงก์รูปแบบ username.github.io/repo)';
-        showState('error');
-        return;
-      }
-
-      showConnectedUI(!!token);
-
-      try{
-        await loadManifest();
-        render();
-      }catch(e){
-        if (token){
-          // saved token no longer works — fall back to public read-only view
-          token = null;
-          try{ localStorage.removeItem(TOKEN_KEY); }catch(err){}
-          showConnectedUI(false);
-          try{
-            await loadManifest();
-            render();
-            return;
-          }catch(e2){ /* fall through to error state below */ }
-        }
-        errorMsgEl.textContent = 'โหลดรายการไม่สำเร็จ';
-        errorSubEl.textContent = 'อาจเป็นเพราะมีคนเรียกข้อมูลเยอะชั่วคราว (จำกัด ~60 ครั้ง/ชั่วโมงสำหรับผู้ชมที่ไม่ได้เชื่อมต่อ) ลองรีเฟรชอีกครั้ง';
-        showState('error');
-      }
-    }
-
-    init();
-  })();
+      loadPublicAnswers();
+    })();
   </script>
 </body>
 </html>
