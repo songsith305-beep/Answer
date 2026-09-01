@@ -328,6 +328,13 @@
     .notice strong { display: block; margin-bottom: 3px; }
     .notice a { color: inherit; font-weight: 750; }
 
+    .token-checklist {
+      margin: 10px 0 12px;
+      padding-left: 21px;
+    }
+
+    .token-checklist li + li { margin-top: 4px; }
+
     .field { display: grid; gap: 7px; }
     .field + .field { margin-top: 15px; }
     .field label { font-size: 0.88rem; font-weight: 700; }
@@ -481,6 +488,7 @@
       margin: 14px 0 0;
       color: var(--muted);
       font-size: 0.87rem;
+      white-space: pre-line;
     }
 
     .status-line.is-error { color: var(--danger); }
@@ -587,15 +595,20 @@
       <div class="dialog-body">
         <section class="auth-panel" id="auth-panel">
           <div class="notice">
-            <strong>โทเคนจะอยู่เฉพาะในหน่วยความจำของแท็บนี้</strong>
-            ระบบจะไม่บันทึกโทเคนลงในเบราว์เซอร์หรือ repository และเมื่อล้างหน้าเว็บจะต้องใส่ใหม่
+            <strong>ตรวจสิทธิ์ token ให้ครบก่อนเชื่อมต่อ</strong>
+            <ol class="token-checklist">
+              <li><b>Resource owner:</b> songsith305-beep</li>
+              <li><b>Repository access:</b> Only select repositories → Answer</li>
+              <li><b>Repository permissions:</b> Contents → Read and write</li>
+            </ol>
+            Token จะอยู่เฉพาะในหน่วยความจำของแท็บ ไม่บันทึกลงในเบราว์เซอร์หรือ repository
           </div>
 
           <form id="auth-form">
             <div class="field">
               <label for="github-token">GitHub fine-grained token</label>
               <input class="text-input" id="github-token" type="password" inputmode="text" autocomplete="off" required placeholder="github_pat_...">
-              <p class="helper">จำกัด token ให้ใช้ได้เฉพาะ repository “Answer” และอนุญาต Contents: Read and write เท่านั้น — <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">สร้าง token ที่ GitHub</a></p>
+              <p class="helper"><a href="https://github.com/settings/personal-access-tokens/new?name=Answer+Manager&amp;description=Manage+HTML+answer+files&amp;target_name=songsith305-beep&amp;expires_in=90&amp;contents=write" target="_blank" rel="noopener noreferrer">สร้าง token ใหม่โดยกรอกเจ้าของและสิทธิ์ให้ล่วงหน้า</a> แล้วเลือก repository “Answer” ก่อนกด Generate token</p>
             </div>
             <div class="button-row">
               <button class="button button-primary" id="connect-button" type="submit">เชื่อมต่อ GitHub</button>
@@ -798,9 +811,24 @@
           const reason = data && data.message ? data.message : `GitHub ตอบกลับ ${response.status}`;
           const error = new Error(reason);
           error.status = response.status;
+          error.acceptedPermissions = response.headers.get("X-Accepted-GitHub-Permissions") || "";
           throw error;
         }
         return data;
+      }
+
+      function friendlyAuthError(error) {
+        const message = String(error && error.message || "");
+        if (error && error.status === 401) {
+          return "Token ไม่ถูกต้อง หมดอายุ หรือถูก revoke แล้ว กรุณาสร้าง token ใหม่";
+        }
+        if (error && error.status === 404) {
+          return "Token มองไม่เห็น repository Answer กรุณาตั้ง Resource owner เป็น songsith305-beep และเลือก Only select repositories → Answer";
+        }
+        if (error && error.status === 403 && /resource not accessible by personal access token/i.test(message)) {
+          return "Token ยังมีสิทธิ์ไม่ครบ กรุณาตรวจ 3 จุด:\n1) Resource owner = songsith305-beep\n2) Repository access = Answer\n3) Contents = Read and write";
+        }
+        return message || "GitHub ไม่อนุญาตให้ token นี้เข้าถึง repository";
       }
 
       function bytesToBase64(bytes) {
@@ -1118,7 +1146,7 @@
           setMessage(elements.authStatus, "");
         } catch (error) {
           state.token = "";
-          setMessage(elements.authStatus, `เชื่อมต่อไม่สำเร็จ: ${error.message}`, "error");
+          setMessage(elements.authStatus, `เชื่อมต่อไม่สำเร็จ: ${friendlyAuthError(error)}`, "error");
           elements.tokenInput.focus();
         } finally {
           elements.connectButton.disabled = false;
